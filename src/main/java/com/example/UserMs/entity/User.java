@@ -16,5 +16,9 @@ public class User {
 
     private String password;
 
-    private String role;
+//    private String role;
+
+    @Enumerated(EnumType.STRING) // Stores "ADMIN" or "USER" as string in DB
+    private Role role;
 }
+

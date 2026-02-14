@@ -1,5 +1,6 @@
 package com.example.UserMs.securityConfig;
 
+import com.example.UserMs.entity.Role;
 import com.example.UserMs.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/ums/createUser").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/ums/createUser").permitAll().
+                        requestMatchers("/api/ums/admin").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()).build();
     }
 

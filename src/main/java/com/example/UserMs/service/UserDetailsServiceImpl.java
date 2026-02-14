@@ -16,6 +16,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("User NOt Found"));
-        return org.springframework.security.core.userdetails.User.builder().username(user.getUserName()).password(user.getPassword()).roles(user.getRole()).build();
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUserName())
+                .password(user.getPassword())
+                .roles(user.getRole().name()) // .roles() automatically adds "ROLE_" prefix (e.g., ROLE_ADMIN)
+                .build();
     }
 }

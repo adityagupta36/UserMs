@@ -23,4 +23,9 @@ public class UserController {
         return "Hello World! You are authenticated.";
     }
 
+    // ONLY Admins can see this    @GetMapping("/admin")
+    public String admin() {
+        return "Hello ADMIN!";
+    }
+
 }
