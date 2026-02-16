@@ -1,6 +1,7 @@
 package com.example.UserMs.securityConfig;
 
 import com.example.UserMs.entity.Role;
+import com.example.UserMs.exception.CustomAccessDeniedHandler;
 import com.example.UserMs.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,9 @@ public class SecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;
 
+    @Autowired
+    CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,7 +43,7 @@ public class SecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/ums/createUser").permitAll().
                         requestMatchers("/api/ums/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()).exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler))
                 .httpBasic(Customizer.withDefaults()).build();
     }
 

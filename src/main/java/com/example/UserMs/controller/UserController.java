@@ -2,7 +2,10 @@ package com.example.UserMs.controller;
 
 import com.example.UserMs.entity.User;
 import com.example.UserMs.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +16,7 @@ public class UserController {
 
     // 1. Public API to Create User
     @PostMapping("/createUser")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody @Valid User user) {
         return userService.createUser(user);
     }
 
@@ -23,7 +26,8 @@ public class UserController {
         return "Hello World! You are authenticated.";
     }
 
-    // ONLY Admins can see this    @GetMapping("/admin")
+    // ONLY Admins can see this
+     @GetMapping("/admin")
     public String admin() {
         return "Hello ADMIN!";
     }
